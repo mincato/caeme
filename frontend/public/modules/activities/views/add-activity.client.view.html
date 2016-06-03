@@ -1,0 +1,219 @@
+<section>
+    <form class="form-horizontal" role="form" name="activityForm">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Nueva Actividad
+            </div>
+            <div class="panel-body">
+              <div class="form-group" ng-class="{'has-error': activityForm.title.$invalid && activityForm.title.$touched }">
+                <label class="control-label col-sm-2" for="email">Actividad:</label>
+                <div class="col-sm-10">
+                  <input type="text" name="title" class="form-control" data-ng-model="activity.title" required>
+                  <div ng-show="activityForm.$submitted || activityForm.title.$touched">
+                        <span ng-show="activityForm.title.$error.required" class="help-block">El titulo es requerido</span>
+                    </div>
+                </div>
+              </div>
+              <div class="form-group" ng-class="{'has-error': activityForm.area.$invalid && activityForm.area.$touched }">
+                <label class="control-label col-sm-2">Area:</label>
+                <div class="col-sm-10"> 
+                    <select class="form-control"
+                            ng-options="area.id as area.name for area in areas"
+                            ng-model="activity.area"
+                            required 
+                            name="area">
+                    </select>
+                    <div ng-show="activityForm.$submitted || activityForm.area.$touched">
+                        <span ng-show="activityForm.area.$error.required" class="help-block">El area es requerida</span>
+                    </div>
+                </div>
+              </div>
+              <div class="form-group" ng-class="{'has-error': activityForm.createdBy.$invalid && activityForm.createdBy.$touched }">
+                <label class="control-label col-sm-2">Creado por:</label>
+                <div class="col-sm-10"> 
+                    <select class="form-control"
+                        ng-options='user.id as (user.name) for user in users'
+                        ng-model="activity.createdBy"
+                        name="createdBy"
+                        required>
+                    </select>
+                    <div ng-show="activityForm.$submitted || activityForm.createdBy.$touched">
+                        <span ng-show="activityForm.createdBy.$error.required" class="help-block">El creador es requerido</span>
+                    </div>
+                </div>
+               </div> 
+              <div class="form-group" ng-class="{'has-error': activityForm.startDate.$invalid && activityForm.startDate.$touched }">
+                <label class="control-label col-sm-2">Fecha desde:</label>
+                <div class="col-sm-10"> 
+                    <input type="text" name="startDate" class="form-control" ng-click="openStartDate()" uib-datepicker-popup="{{format}}" ng-model="startDate" is-open="popupStartDate.opened" close-text="Cerrar" required date-lower-or-equal-than="{{endDate}}"/>
+                    <div ng-show="activityForm.$submitted || activityForm.startDate.$touched">
+                        <span ng-show="activityForm.startDate.$error.required" class="help-block">La fecha es requerida</span>
+                        <span ng-show="activityForm.startDate.$error.dateLowerOrEqualThan" class="help-block">La fecha debe ser menor o igual a la 'Fecha hasta' </span>
+                    </div>
+                </div>
+              </div>
+              <div class="form-group" ng-class="{'has-error': activityForm.endDate.$invalid && activityForm.endDate.$touched }">
+                <label class="control-label col-sm-2">Fecha hasta:</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="endDate" ng-click="openEndDate()" uib-datepicker-popup="{{format}}" ng-model="endDate" is-open="popupEndDate.opened" close-text="Cerrar" date-higher-or-equal-than="{{startDate}}"/>
+                    <div ng-show="activityForm.$submitted || activityForm.endDate.$touched">
+                        <span ng-show="activityForm.endDate.$error.required" class="help-block">La fecha es requerida</span>
+                        <span ng-show="activityForm.endDate.$error.dateHigherOrEqualThan" class="help-block">La fecha debe ser mayor o igual a la 'Fecha desde'</span>
+                    </div>
+                </div>
+              </div>
+              <div class="form-group" ng-class="{'has-error': activityForm.location.$invalid && activityForm.location.$touched }">
+                <label class="control-label col-sm-2">Ubicacion:</label>
+                <div class="col-sm-10"> 
+                  <input type="text" name="location" class="form-control" data-ng-model="activity.location" required>
+                  <div ng-show="activityForm.$submitted || activityForm.location.$touched">
+                        <span ng-show="activityForm.location.$error.required" class="help-block">La ubicacion es requerida</span>
+                    </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2">Descripcion:</label>
+                <div class="col-sm-10"> 
+                  <textarea rows="3" type="text" class="form-control" data-ng-model="activity.description"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2">Observacion:</label>
+                <div class="col-sm-10"> 
+                  <textarea rows="3" type="text" class="form-control" data-ng-model="activity.observation"></textarea>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Participantes CAEMe
+            </div>
+            <div class="panel-body">
+                <table class="table table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre y Apellido</th>
+                            <th>Tipo de participacion</th>
+                            <th>Observacion</th>
+                            <th>Organizador</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="participant in activity.caemeParticipants">
+                            <td class="col-md-3" ng-class="{'has-error': activityForm.caemeParticipantName_{{$index}}.$invalid && activityForm.caemeParticipantName_{{$index}}.$touched }"> 
+                                <select class="form-control"
+                                        ng-options='user.id as (user.name) for user in users'
+                                        ng-model="participant.user" name="caemeParticipantName_{{$index}}" required>
+                                </select>
+                            </td>
+                            <td class="col-md-2" ng-class="{'has-error': activityForm.caemeParticipantType_{{$index}}.$invalid && activityForm.caemeParticipantType_{{$index}}.$touched }"> 
+                                <select name="caemeParticipantType_{{$index}}" class="form-control" ng-model="participant.participationType.participationType" ng-hide="participant.participationType.participationType === 'Otro'" required>
+                                    <option ng-repeat="option in participationTypes" value="{{option}}">{{option}}</option>
+                                </select>
+                                <div class="input-group" ng-show="participant.participationType.participationType === 'Otro'">
+                                  <input type="text" class="form-control" data-ng-model="participant.participationType.otherParticipationType">
+                                    <span class="input-group-btn">
+                                    <button class="btn btn-secondary" type="button" data-ng-click="removeParticipationType(participant)">x</button>
+                                  </span>
+                            </td>
+                            <td class="col-md-3"><input type="text" class="form-control" data-ng-model="participant.observation"></td>
+                            <td class="col-md-1">
+                                <div class="radio text-center">
+                                  <label>
+                                    <input type="radio" name="organizer" ng-model="participant.organizer" ng-value="true" ng-checked="participant.organizer" ng-change="updateOrganizer(participant) ">
+                                  </label>
+                                </div>
+                            </td>
+                            <td class="col-md-1">
+                                <div ng-hide="$first" class="btn-group" role="group" aria-label="acciones sobre el participante">
+                                    <button type="button" 
+                                            class="btn btn-sm btn-danger" 
+                                            data-ng-click="removeCaemeParticipant(participant)">
+                                        Quitar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                 <div class="col-sm-offset-5 col-sm-7 col-xs-12">
+                    <div class="btn-toolbar" role="toolbar" aria-label="opciones para agregar">
+                        <div class="btn-group" role="group" aria-label="agregar">
+                            <button type="button" class="btn btn-success"
+                                    data-ng-click="addCameParticipant()">Agregar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+               Otros Participantes
+            </div>
+            <div class="panel-body">
+                <table class="table table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre y Apellido</th>
+                            <th>Tipo de participacion</th>
+                            <th>Observacion</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="participant in activity.otherParticipants">
+                            <td class="col-md-3" ng-class="{'has-error': activityForm.otherParticipantName_{{$index}}.$invalid && activityForm.otherParticipantName_{{$index}}.$touched }"><input type="text" class="form-control" data-ng-model="participant.name" name="otherParticipantName_{{$index}}" required></td>
+                            <td class="col-md-2" ng-class="{'has-error': activityForm.otherParticipantType_{{$index}}.$invalid && activityForm.otherParticipantType_{{$index}}.$touched }">
+                                <select class="form-control" name="otherParticipantType_{{$index}}" ng-model="participant.participationType.participationType" ng-hide="participant.participationType.participationType === 'Otro'" required>
+                                    <option ng-repeat="option in participationTypes" value="{{option}}">{{option}}</option>
+                                </select>
+                                <div class="input-group" ng-show="participant.participationType.participationType === 'Otro'">
+                                  <input type="text" class="form-control" data-ng-model="participant.participationType.otherParticipationType">
+                                    <span class="input-group-btn">
+                                    <button class="btn btn-secondary" type="button" data-ng-click="removeParticipationType(participant)">x</button>
+                                  </span>
+                            </td>
+                            <td class="col-md-3"><input type="text" class="form-control" data-ng-model="participant.observation"></td>
+                            <td class="col-md-1">
+                                <div class="btn-group" role="group" aria-label="acciones sobre el participante">
+                                    <button type="button" 
+                                            class="btn btn-sm btn-danger" 
+                                            data-ng-click="removeOtherParticipant(participant)">
+                                        Quitar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                 <div class="col-sm-offset-5 col-sm-7 col-xs-12">
+                    <div class="btn-toolbar" role="toolbar" aria-label="opciones para agregar">
+                        <div class="btn-group" role="group" aria-label="agregar">
+                            <button type="button" class="btn btn-success"
+                                    data-ng-click="addOtherParticipant()">Agregar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-offset-5 col-sm-7 col-xs-12">
+                <div class="btn-toolbar" role="toolbar" aria-label="opciones para confirmar o separar">
+                    
+                    <div class="btn-group col-lg-4" role="group" aria-label="confirmar o separar">
+                        <button type="button" class="btn btn-success btn-block"
+                                data-ng-click="create()"
+                                data-ng-disabled="activityForm.$invalid">Crear</button>
+                    </div>
+                    
+                    <div class="btn-group pull-right" role="group" aria-label="volver">
+                        <button type="button" class="btn btn-default btn-sm"
+                                data-ng-click="cancel()">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

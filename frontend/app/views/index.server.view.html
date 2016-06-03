@@ -1,0 +1,13 @@
+{% extends 'layout.server.view.html' %}
+
+{% block content %}
+    <div  div class="container-fluid" data-ng-controller="ApplicationController">
+        
+        <cent-message ng-model="messages.danger" danger></cent-message>
+        <cent-message ng-model="messages.info" info></cent-message>
+        <cent-message ng-model="messages.warning" warning></cent-message>
+        <cent-message ng-model="messages.success" success></cent-message>
+        
+        <div class="row" data-ui-view></div>
+    </div>
+{% endblock %}

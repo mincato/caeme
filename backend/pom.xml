@@ -1,0 +1,241 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.caeme.activityreport</groupId>
+	<artifactId>activity-report</artifactId>
+	<packaging>war</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>backend</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<frontend.basedir>../frontend</frontend.basedir>
+		
+		<yeoman.maven.plugin.version>0.2</yeoman.maven.plugin.version>
+	
+		<springframework.version>4.2.5.RELEASE</springframework.version>
+		<springframeworkdata.version>1.5.1.RELEASE</springframeworkdata.version>
+		<junit.version>4.12</junit.version>
+		<jackson.version>2.7.3</jackson.version>
+		<maven.war.plugin.version>2.1</maven.war.plugin.version>
+		<hibernate.version>5.1.0.Final</hibernate.version>
+		<sqlserver.connector.version>4.0</sqlserver.connector.version>
+		<log4j-version>1.2.17</log4j-version>
+		<slf4j-version>1.7.5</slf4j-version>
+	</properties>
+
+	<dependencies>
+	
+		<!-- Log -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j-version}</version>
+		</dependency>
+	
+		<dependency>
+    		<groupId>com.mysema.querydsl</groupId>
+    		<artifactId>querydsl-jpa</artifactId>
+    		<version>3.7.2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-core</artifactId>
+			<version>3.7.2</version>
+		</dependency>
+		
+		
+		<dependency>
+  			<groupId>com.mysema.querydsl</groupId>
+  			<artifactId>querydsl-apt</artifactId>
+  			<version>3.7.2</version>
+  			<scope>provided</scope>
+		</dependency>
+	
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		
+		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${springframework.version}</version>
+        </dependency>
+        
+        <dependency>
+        	<groupId>org.springframework.data</groupId>
+        	<artifactId>spring-data-jpa</artifactId>
+        	<version>${springframeworkdata.version}</version>
+    	</dependency>
+    	
+    	
+        
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        
+        <dependency>
+   			<groupId>org.hibernate</groupId>
+   			<artifactId>hibernate-entitymanager</artifactId>
+   			<version>${hibernate.version}</version>
+		</dependency>
+        
+		<!-- SQL Server -->
+        <dependency>
+  			<groupId>com.microsoft.sqlserver</groupId>
+  			<artifactId>sqljdbc4</artifactId>
+  			<version>${sqlserver.connector.version}</version>
+		</dependency>
+
+		<!-- Jackson JSON Mapper -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+      		<groupId>com.fasterxml.jackson.datatype</groupId>
+      		<artifactId>jackson-datatype-hibernate5</artifactId>
+      		<version>${jackson.version}</version>
+		</dependency> 
+		
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.4</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>			
+		</profile>
+		<profile>
+			<id>grunt-build</id>
+			<build>
+				<plugins>
+		 			<plugin>
+						<groupId>com.github.trecloux</groupId>
+						<artifactId>yeoman-maven-plugin</artifactId>
+						<version>${yeoman.maven.plugin.version}</version>
+						<configuration>
+							<yeomanProjectDirectory>${frontend.basedir}</yeomanProjectDirectory>
+						</configuration>
+						<executions>
+							<execution>
+								<id>run-grunt</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>build</goal>
+								</goals>
+								<configuration>
+									<gruntBuildArgs>build</gruntBuildArgs>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<build>
+		<finalName>activity-report</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${maven.war.plugin.version}</version>
+				<configuration>
+					<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+					<warName>${project.build.finalName}</warName>
+					<webResources>
+		        	    <resource>
+						  <!-- this is relative to the pom.xml directory -->
+			              <directory>${frontend.basedir}/public/dist</directory>
+			            </resource>
+			        </webResources>
+				</configuration>
+			</plugin>
+			<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-compiler-plugin</artifactId>
+        		<version>3.5.1</version>
+        		<configuration>
+          			<source>1.8</source>
+          			<target>1.8</target>
+        		</configuration>
+      		</plugin>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<url>http://localhost:8080/manager/text</url>
+					<server>TomcatServer</server>
+				</configuration>
+			</plugin>
+			<plugin>
+			    <groupId>com.mysema.maven</groupId>
+			    <artifactId>apt-maven-plugin</artifactId>
+			    <version>1.1.3</version>
+			    <executions>
+			        <execution>
+			            <goals>
+			                <goal>process</goal>
+			            </goals>
+			            <configuration>
+			                <outputDirectory>target/generated-sources/apt</outputDirectory>
+			                <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>

@@ -1,0 +1,139 @@
+<div class="main" data-ng-controller="ReportActivityController" data-ng-init="init()">
+  <h1 class="page-header">Dashboard</h1>
+
+  <div class="row placeholders" data-ng-show="activitiesPerArea.length">
+    <div class="col-xs-6 col-sm-5 col-lg-4 placeholder">
+      <canvas id="areaChart" class="chart chart-pie"
+        chart-data="activitiesPerArea" chart-labels="areasLabels" chart-legend="true">
+      </canvas>
+      <h4>Areas</h4>
+      <span class="text-muted">Cantidad de actividades por area</span>
+    </div>
+    <div class="col-xs-6 col-sm-5 col-lg-4 placeholder">
+      <canvas id="monthChart" class="chart chart-bar"
+        chart-data="activitiesPerMonth" chart-labels="monthLabels" chart-series="monthSeries">
+      </canvas> 
+      <h4>Meses</h4>
+      <span class="text-muted">Cantidad de actividades por mes</span>
+    </div>
+    <div class="col-xs-6 col-sm-5 col-lg-4 placeholder">
+      <canvas id="participantChart" class="chart-base"
+        chart-type="horizontalBarType" chart-data="activitiesPerParticipant" chart-labels="participantLabels" chart-series="participantSeries">
+      </canvas> 
+      <h4>Organizadores</h4>
+      <span class="text-muted">Cantidad de actividades por organizador</span>
+    </div>
+  </div>
+
+  <h2 class="sub-header">Filtros</h2>
+
+  <div class="row placeholders">
+    <form class="form-inline">
+      <div class="form-group col-lg-4">
+        <label>Rango de fechas</label>
+        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-click="openStartDate()" ng-model="filters.startDate" datepicker-options="startDateOptions" is-open="popupStartDate.opened" close-text="Cerrar" />
+        <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-click="openEndDate()" ng-model="filters.endDate" datepicker-options="endDateOptions" is-open="popupEndDate.opened" close-text="Cerrar" />
+      </div>
+      <div class="form-group col-lg-3">
+        <label>Area</label>
+        <select class="form-control"
+                ng-options="area.name for area in areas track by area.id"
+                ng-model="filters.areas">
+                <option value=""></option>
+        </select>
+      </div>
+      <div class="form-group col-lg-3">
+        <label>Actividad</label>
+        <input type="text" class="form-control" ng-model="filters.title" />
+      </div>
+    </form>
+  </div>
+
+  <div class="row placeholders">
+    <form class="form-inline">
+      <div class="form-group col-lg-5">
+        <label>Paricipante</label>
+        <select class="form-control"
+                ng-options='user as (user.name) for user in users track by user.id'
+                ng-model="filters.participants">
+                <option value=""></option>
+        </select>
+      </div>
+      <div class="form-group col-lg-5">
+        <label>Otro Participante</label>
+        <input type="text" class="form-control" ng-model="filters.otherParticipant" />
+      </div>
+      <button type="submit" class="btn btn-primary" data-ng-click="search()">Buscar</button>
+    </form>
+  </div>
+
+  <div data-ng-show="searchingActivities" class="col-sm-offset-5">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+
+  <h2 class="sub-header">Actividades</h2>
+
+  <div class="alert alert-warning text-center" data-ng-hide="activities.length || searchingActivities">
+    No se encontraron categorias.
+  </div>
+
+  <div class="row">
+      <div class="col-sm-offset-5 col-sm-8 col-xs-12">
+          <div class="btn-toolbar" role="toolbar" aria-label="opciones para confirmar o separar">
+              <div class="btn-group" role="group" aria-label="confirmar o separar">
+                  <button type="button" class="btn btn-success"
+                          data-ng-click="toggleAddActivity()">Agregar actividad</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Actividad</th>
+          <th>Organizador</th>
+          <th>Fecha</th>
+          <th>Ubicacion</th>
+          <th>Participantes</th>
+          <th>Accion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-ng-repeat="activity in activities" data-ng-hide="searchingActivities || activities.length <= 0">
+            <td class="col-md-3" data-ng-bind="activity.title"></td>
+            <td class="col-md-2" data-ng-bind="getOrganizer(activity)"></td>
+            <td class="col-md-2" data-ng-bind="activity.startDate"></td>
+            <td class="col-md-3" data-ng-bind="activity.location"></td>
+            <td class="col-md-1" uib-popover-html="participantsPopover(activity)" popover-trigger="mouseenter" popover-placement="left" popover-append-to-body="true">
+                <i class="fa fa-users fa-2x"></i>
+            </td>
+            
+            <td class="col-md-1">
+              <div class="btn-group action-btn-group" role="group" aria-label="acciones">
+                <button type="button" 
+                        class="btn btn-md btn-primary action-btn-primary" 
+                        data-ng-click="review(activity)">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <button type="button" 
+                        class="btn btn-md btn-danger action-btn-secondary" 
+                        data-ng-click="removeActivity(activity)">
+                    <i class="fa fa-trash-o"></i>
+                </button>
+              </div>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+    <uib-pagination 
+        ng-model="currentPage"
+        total-items="totalItems"
+        max-size="maxSize"  
+        boundary-links="true"
+        items-per-page="itemsPerPage"
+        ng-change="pageChanged()">
+    </uib-pagination>
+  </div>
+</div>
