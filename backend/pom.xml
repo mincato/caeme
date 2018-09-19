@@ -19,9 +19,9 @@
 		<jackson.version>2.7.3</jackson.version>
 		<maven.war.plugin.version>2.1</maven.war.plugin.version>
 		<hibernate.version>5.1.0.Final</hibernate.version>
-		<sqlserver.connector.version>4.0</sqlserver.connector.version>
 		<log4j-version>1.2.17</log4j-version>
 		<slf4j-version>1.7.5</slf4j-version>
+		<mysql-version>5.1.36</mysql-version>
 	</properties>
 
 	<dependencies>
@@ -116,9 +116,9 @@
         
 		<!-- SQL Server -->
         <dependency>
-  			<groupId>com.microsoft.sqlserver</groupId>
-  			<artifactId>sqljdbc4</artifactId>
-  			<version>${sqlserver.connector.version}</version>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-version}</version>
 		</dependency>
 
 		<!-- Jackson JSON Mapper -->

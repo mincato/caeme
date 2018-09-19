@@ -8,6 +8,6 @@ import com.caeme.activityreport.core.model.Area;
 
 public interface AreaRepository extends CrudRepository<Area, Integer>{
 	
-	List<Area> findAll();
+	List<Area> findAllByOrderByNameAsc();
 	
 }

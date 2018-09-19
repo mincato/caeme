@@ -49,7 +49,7 @@ public class AreaServiceImpl implements AreaService{
 
 	@Override
 	public List<Area> findAllAreas() {
-		return areaRepository.findAll();
+		return areaRepository.findAllByOrderByNameAsc();
 	}
 	
 }

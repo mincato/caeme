@@ -105,7 +105,7 @@ public class ActivityServiceImpl implements ActivityService{
 
 	@Override
 	public List<Area> findAllAreas() {
-		return areaRepository.findAll();
+		return areaRepository.findAllByOrderByNameAsc();
 	}
 
 	@Override

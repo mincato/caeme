@@ -131,18 +131,6 @@ module.exports = function(grunt) {
 				NODE_ENV: 'development'
 			}
 		},
-		mochaTest: {
-			src: watchFiles.mochaTests,
-			options: {
-				reporter: 'spec',
-				require: 'server.js'
-			}
-		},
-		karma: {
-			unit: {
-				configFile: 'karma.conf.js'
-			}
-		},
 		copy: {
 			main: {
 				expand: true,
@@ -244,7 +232,7 @@ module.exports = function(grunt) {
 	});
 
 	// Default task(s).
-	grunt.registerTask('default', ['less:development', 'lint', 'test', 'concurrent:default']);
+	grunt.registerTask('default', ['less:development', 'lint', 'concurrent:default']);
 
 	// Debug task.
 	grunt.registerTask('debug', ['lint', 'concurrent:debug']);

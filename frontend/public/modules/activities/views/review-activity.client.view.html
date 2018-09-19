@@ -62,7 +62,7 @@
                       <div class="form-group" ng-class="{'has-error': activityForm.endDate.$invalid && activityForm.endDate.$touched }">
                         <label class="control-label col-sm-2">Fecha hasta:</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" name="endDate" ng-click="openEndDate()" uib-datepicker-popup="{{format}}" ng-model="endDate" is-open="popupEndDate.opened" close-text="Cerrar" date-higher-or-equal-than="{{startDate}}"/>
+                          <input type="text" class="form-control" name="endDate" ng-click="openEndDate()" uib-datepicker-popup="{{format}}" ng-model="endDate" is-open="popupEndDate.opened" close-text="Cerrar" required date-higher-or-equal-than="{{startDate}}"/>
                             <div ng-show="activityForm.$submitted || activityForm.endDate.$touched">
                                 <span ng-show="activityForm.endDate.$error.required" class="help-block">La fecha es requerida</span>
                                 <span ng-show="activityForm.endDate.$error.dateHigherOrEqualThan" class="help-block">La fecha debe ser mayor o igual a la 'Fecha desde'</span>
